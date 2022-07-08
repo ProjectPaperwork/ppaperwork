@@ -1,7 +1,4 @@
-"""
-┌──────────────────────────────────────────────┐
-│ Helper class to process a parsed Gherkin AST │
-└──────────────────────────────────────────────┘
+"""Helper class to process a parsed Gherkin AST
 
  Florian Dupeyron
  May 2022

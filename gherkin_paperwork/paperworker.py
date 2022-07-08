@@ -1,4 +1,6 @@
+import logging
 import os
+import sys
 import yaml
 import shutil
 import subprocess
@@ -87,6 +89,12 @@ class Paperworker:
         if self.opts.doxygen["include_gherkin"]:
             input_str = self.opts.doxyfile["INPUT"]
             input_str += f' {self.opts.common["output_directory"]}/gherkin/md_file'
+
+        # Disable gherkin job if the features dir is not found or provided
+        if not self.opts.gherkin["features_dir"]:
+            logging.error(f"gherkin.features_dir is not defined {self.opts.gherkin['features_dir']} => gherkin job is disabled")
+            self.opts.jobs["gherkin"] = False
+
            
     ###########################################################################
     ###########################################################################
@@ -95,33 +103,40 @@ class Paperworker:
         """Main working function
         """
         print(f"Gherkin Paperwork !")
+        sys.stdout.flush()
 
         #
         self.updateOptionsFromWorkingDirAnalysis()
+        sys.stdout.flush()
 
         #
         self.opts.updateFromYml(self.paperworkFile)
+        sys.stdout.flush()
 
         #
         self.adaptSubOptions()
+        sys.stdout.flush()
 
         # Print job configuration
-        print(f"=================================================")
-        print(f"=================================================")
-        print("OPTIONS")
-        print("you can override using 'gpaperwork.yml'")
+        logging.info(f"=================================================")
+        logging.info(f"=================================================")
+        logging.info("OPTIONS")
+        logging.info("you can override using 'ppaperwork.yml'")
         print(yaml.dump(self.opts, default_flow_style=False))
-        print(f"=================================================")
-        print(f"=================================================")
+        logging.info(f"=================================================")
+        logging.info(f"=================================================")
 
         
         # Delete ouput if already exist
         if os.path.isdir(self.opts.common["output_directory"]):
-            print(f"delete directory '{self.opts.common['output_directory']}'")
+            logging.info(f"reset output directory '{self.opts.common['output_directory']}'")
             shutil.rmtree(self.opts.common["output_directory"])
         os.makedirs(self.opts.common["output_directory"])
 
+
+
         #
+        sys.stdout.flush()
         self.gherkin()
         self.doxygen()
 
@@ -192,12 +207,16 @@ class Paperworker:
             print(f"=================================================")
             print(f"=================================================")
             print(f"Doxygen PDF into {latex_path}")
-            subprocess.run([ "make" ], shell=True, check=True, cwd=latex_path)
+            doxygen_log_file=self.subprocessLogFile('doxygen_latex_to_pdf.txt')
+            try:
+                with open(doxygen_log_file, "w") as logfile:
+                    subprocess.run([ "make" ], shell=True, check=True, cwd=latex_path, stdout=logfile, stderr=logfile)
             
-            # Copy the pdf at the right place
-            os.makedirs( self.opts.doxyfile["OUTPUT_DIRECTORY"] + '/pdf', exist_ok=True )
-            shutil.copyfile(self.opts.doxyfile["OUTPUT_DIRECTORY"] + '/latex/refman.pdf', self.opts.doxyfile["OUTPUT_DIRECTORY"] + '/pdf/manual.pdf')
-
+                # Copy the pdf at the right place
+                os.makedirs( self.opts.doxyfile["OUTPUT_DIRECTORY"] + '/pdf', exist_ok=True )
+                shutil.copyfile(self.opts.doxyfile["OUTPUT_DIRECTORY"] + '/latex/refman.pdf', self.opts.doxyfile["OUTPUT_DIRECTORY"] + '/pdf/manual.pdf')
+            except:
+                logging.error(f"DOXYGEN LATEX TO PDF FAILED (see {doxygen_log_file})")            
  
     ###########################################################################
     ###########################################################################

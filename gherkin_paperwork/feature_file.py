@@ -1,7 +1,4 @@
-"""
-┌───────────────────────────────────────────────┐
-│ Represent Gherkin feature file as dataclasses │
-└───────────────────────────────────────────────┘
+"""Represent Gherkin feature file as dataclasses
 
  Florian Dupeyron
  May 2022
