@@ -1,10 +1,12 @@
 import os
 import yaml
 
-
 class Options:
     """Contains options of the worker
     """
+    
+    ###########################################################################
+    ###########################################################################
 
     def updateFromYml(self, ymlfilepath):
         # Check if the paperwork file is here
@@ -24,7 +26,9 @@ class Options:
         self.gherkin.update(user_overrides["gherkin"])
         self.doxygen.update(user_overrides["doxygen"])
         self.doxyfile.update(user_overrides["doxyfile"])
-
+    
+    ###########################################################################
+    ###########################################################################
     
     def __init__(self) -> None:
         

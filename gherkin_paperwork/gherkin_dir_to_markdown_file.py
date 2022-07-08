@@ -2,8 +2,6 @@ import os
 import shutil
 import logging
 
-
-
 from gherkin.dialect                import Dialect
 from gherkin.parser                 import Parser
 
@@ -17,17 +15,21 @@ from gherkin_paperwork.feature_file import (
 
 from gherkin_paperwork.markdown     import Markdown_NodeVisitor
 
-
-
 def gherkin_dir_to_markdown_file(input_dir, output_file):
-    """
+    """Convert a gherkin features directory to a markdown file
     """
     # Extract data
     output_dir = os.path.dirname(output_file)
 
-    print(f"input_dir    : {input_dir}")
-    print(f"output_dir   : {output_dir}")
-    print(f"output_file  : {output_file}")
+    # Check input directory
+    if input_dir == None:
+        logging.info(f"Input features directory is not provided : {input_dir}")
+        return
+
+    # Logs
+    logging.info(f"input_dir    : {input_dir}")
+    logging.info(f"output_dir   : {output_dir}")
+    logging.info(f"output_file  : {output_file}")
 
     # Delete ouput if already exist
     if os.path.isdir(output_dir):

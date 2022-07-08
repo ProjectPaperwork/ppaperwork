@@ -1,3 +1,4 @@
+import logging
 from gherkin_paperwork.paperworker import Paperworker
 
 if __name__ == '__main__':

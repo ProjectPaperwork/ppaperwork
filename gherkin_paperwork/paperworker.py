@@ -40,6 +40,17 @@ class Paperworker:
     ###########################################################################
     ###########################################################################
 
+    def subprocessLogFile(self, filename):
+        """Build the path for the logs of subprocesses and create it if needed then return the path to the file
+        """
+        doxygen_log_dir=os.path.join(self.opts.common["output_directory"], 'logs')
+        if not os.path.isdir(doxygen_log_dir):
+            os.makedirs(doxygen_log_dir)
+        return os.path.join(doxygen_log_dir, filename)
+
+    ###########################################################################
+    ###########################################################################
+
     def updateOptionsFromWorkingDirAnalysis(self):
         """
         """
@@ -63,30 +74,6 @@ class Paperworker:
         
         #
         self.opts.gherkin["features_dir"] = directory_find("features")
-
-    ###########################################################################
-    ###########################################################################
-
-    def parseUserOverrides(self):
-        """
-        """
-        # Check if the paperwork file is here
-        if not os.path.isfile(self.paperworkFile):
-            print(f"No user overrides '{self.paperworkFile}'")
-            return 
-
-        # Parse file
-        user_overrides=None
-        with open(self.paperworkFile) as file:
-            user_overrides = yaml.load(file, Loader=yaml.FullLoader)
-        print(user_overrides)
-        
-        # Update options
-        self.opts.jobs.update(user_overrides["jobs"])
-        self.opts.common.update(user_overrides["doxygen"])
-        self.opts.gherkin.update(user_overrides["gherkin"])
-        self.opts.doxygen.update(user_overrides["doxygen"])
-        self.opts.doxyfile.update(user_overrides["doxyfile"])
 
 
     ###########################################################################
@@ -113,7 +100,7 @@ class Paperworker:
         self.updateOptionsFromWorkingDirAnalysis()
 
         #
-        self.parseUserOverrides()
+        self.opts.updateFromYml(self.paperworkFile)
 
         #
         self.adaptSubOptions()
@@ -191,7 +178,9 @@ class Paperworker:
             os.makedirs( self.opts.doxyfile["OUTPUT_DIRECTORY"], exist_ok=True )
         
         # Run doxygen
-        subprocess.run("doxygen", shell=True, check=True)
+        doxygen_log_file=self.subprocessLogFile('doxygen.txt')
+        with open(doxygen_log_file, "w") as logfile:
+            subprocess.run("doxygen", shell=True, check=True, stdout=logfile, stderr=logfile)
 
         # Cleanup
         os.remove("Doxyfile")

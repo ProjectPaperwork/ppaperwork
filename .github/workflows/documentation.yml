@@ -1,0 +1,19 @@
+name: Produce the documentation of the repository
+on: [push]
+
+jobs:
+  SelfDocumentation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v2
+
+      - run: chmod +x ./ppaperwork.sh && ./ppaperwork.sh -r
+
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: documentation
+          path: documentation
+
+      - run: echo "🎉 finished !"
