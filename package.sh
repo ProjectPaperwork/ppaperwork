@@ -1,13 +1,12 @@
-
+#!/bin/bash
 
 BUILD_MODE=1
 INSTALL_MODE=0
 
-
 while [[ $# -gt 0 ]]; do
   case $1 in
     -i|--install)
-        INSTALL_MODE=0
+        INSTALL_MODE=1
         shift # past argument
         ;;
     *)
@@ -18,7 +17,6 @@ done
 
 
 if [ $BUILD_MODE == 1 ] ; then
-    # Build python package
     python3 setup.py sdist bdist_wheel
 fi;
 

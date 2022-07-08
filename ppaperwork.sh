@@ -1,3 +1,4 @@
+#!/bin/bash
 
 USER_MODE=1
 LOCAL_IMAGE=0
