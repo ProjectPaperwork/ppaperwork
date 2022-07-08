@@ -67,7 +67,7 @@ class Options:
         self.doxyfile = dict()
         self.doxyfile["DOXYFILE_ENCODING"]       = "UTF-8"
         self.doxyfile["PROJECT_NAME"]            = "NAMELESS"
-        self.doxyfile["PROJECT_LOGO"]            = "img/project_logo.svg"
+        self.doxyfile["PROJECT_LOGO"]            = "img/project_logo.png"
         self.doxyfile["OUTPUT_DIRECTORY"]        = "documentation/doxygen"
         self.doxyfile["CREATE_SUBDIRS"]          = "YES"
         self.doxyfile["ALLOW_UNICODE_NAMES"]     = "YES"

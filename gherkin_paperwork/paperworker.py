@@ -119,11 +119,11 @@ class Paperworker:
 
         # Print job configuration
         logging.info(f"=================================================")
-        logging.info(f"=================================================")
         logging.info("OPTIONS")
+        sys.stdout.flush()
         logging.info("you can override using 'ppaperwork.yml'")
         print(yaml.dump(self.opts, default_flow_style=False))
-        logging.info(f"=================================================")
+        sys.stdout.flush()
         logging.info(f"=================================================")
 
         
@@ -146,7 +146,6 @@ class Paperworker:
     def gherkin(self):
         """Run the gherkin job
         """
-        print(f"=================================================")
         print(f"=================================================")
         if not self.opts.jobs["gherkin"]:
             print(f"JOB: Gherkin => disabled")
@@ -176,7 +175,6 @@ class Paperworker:
         """Run the doxygen job
         """
         print(f"=================================================")
-        print(f"=================================================")
         if not self.opts.jobs["doxygen"]:
             print(f"JOB: Doxygen => disabled")
             return
@@ -204,7 +202,6 @@ class Paperworker:
         if self.opts.doxygen["output_pdf"]:
             # Generate the pdf
             latex_path = self.opts.doxyfile["OUTPUT_DIRECTORY"] + '/' + 'latex'
-            print(f"=================================================")
             print(f"=================================================")
             print(f"Doxygen PDF into {latex_path}")
             doxygen_log_file=self.subprocessLogFile('doxygen_latex_to_pdf.txt')

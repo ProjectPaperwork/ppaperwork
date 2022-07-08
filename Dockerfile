@@ -28,12 +28,8 @@ RUN cd / && git clone https://github.com/jothepro/doxygen-awesome-css.git
 WORKDIR /setup
 COPY . /setup/gherkin-paperwork
 WORKDIR /setup/gherkin-paperwork
-RUN chmod +x ./package-build.sh
-RUN ./package-build.sh
-RUN chmod +x ./package-install.sh
-RUN ./package-install.sh
-
-
+RUN chmod +x ./package.sh
+RUN ./package.sh -i
 
 #
 WORKDIR /workdir
