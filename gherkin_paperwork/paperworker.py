@@ -14,6 +14,10 @@ from tabulate                       import tabulate
 from gherkin_paperwork.gherkin_dir_to_markdown_file import gherkin_dir_to_markdown_file
 from gherkin_paperwork.options                      import Options
 
+
+from gherkin_paperwork.hooks_before_user_overrides import hooks_before_user_overrides
+
+
 def directory_find(atom, root='.'):
     for path, dirs, files in os.walk(root):
         if atom in dirs:
@@ -74,6 +78,7 @@ class Paperworker:
                 dox_inputs+=f" {element}"
         self.opts.doxyfile["INPUT"] = dox_inputs
         
+
         #
         self.opts.gherkin["features_dir"] = directory_find("features")
 
@@ -104,6 +109,9 @@ class Paperworker:
         """
         print(f"Gherkin Paperwork !")
         sys.stdout.flush()
+        
+        #
+        hooks_before_user_overrides(self)
 
         #
         self.updateOptionsFromWorkingDirAnalysis()

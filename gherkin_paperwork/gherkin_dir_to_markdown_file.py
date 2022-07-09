@@ -15,6 +15,17 @@ from gherkin_paperwork.feature_file import (
 
 from gherkin_paperwork.markdown     import Markdown_NodeVisitor
 
+
+def find_first_md_file_in_dir(dir):
+    """Search in the directory to find a markdown file
+    """
+    for file in os.listdir(dir):
+        if file.endswith(".md"):
+            return os.path.join(dir, file)
+    return None
+            
+            
+
 def gherkin_dir_to_markdown_file(input_dir, output_file):
     """Convert a gherkin features directory to a markdown file
     """
@@ -33,19 +44,19 @@ def gherkin_dir_to_markdown_file(input_dir, output_file):
 
     # Delete ouput if already exist
     if os.path.isdir(output_dir):
-        print(f"delete directory '{output_dir}'")
+        logging.info(f"delete directory '{output_dir}'")
         shutil.rmtree(output_dir)
 
     # Copy the entire input directory
-    print(f"copy files from '{input_dir}' to '{output_dir}'")
+    logging.info(f"copy files from '{input_dir}' to '{output_dir}'")
     shutil.copytree(input_dir, output_dir) 
 
-    # Embed the README.md id any
-    readme_path = os.path.join(output_dir, "README.md")
+    # Embed the first '.md' file found in the features directory
+    readme_path=find_first_md_file_in_dir(output_dir)
     if os.path.isfile(readme_path):
-        print(f"merge '{readme_path}' to '{output_file}'")
+        logging.info(f"merge '{readme_path}' to '{output_file}'")
         shutil.copyfile(readme_path, output_file)
-        print(f"remove '{readme_path}'")
+        logging.info(f"remove '{readme_path}'")
         os.remove(readme_path)
 
     # Convert features
