@@ -1,45 +1,25 @@
 # Project Paperwork
 
-This repository regroups various experiments aiming at giving a simple way of generating
-documentation from Gherkin_ files, using the canonical `gherkin-python`_ python module.
+This project provides a docker image that builds your project documentations.
 
-.. _Gherkin: https://cucumber.io/docs/gherkin/
-.. _`gherkin-python`: https://github.com/cucumber/gherkin-python
+## How to use it in your project ?
 
-Generate the example markdown file
-==================================
+1. Install docker
 
-1. Install the required dependencies:
-    .. code:: bash
+- ![Ubuntu Documentation](https://docs.docker.com/engine/install/ubuntu/)
 
-       pip install gherkin-official
-       pip install tabulate
+2. Just copy the script **ppaperwork.sh** in your project.
 
-2. Execute the script!
-    .. code:: bash
-        
-        python3 print_md_visitor.py
+```bash
+cd path/to/my/project
+wget https://raw.githubusercontent.com/ProjectPaperwork/ppaperwork/main/ppaperwork.sh
+```
 
-3. You can use pandoc to convert it to HTML:
-    .. code:: bash
-        
-        pandoc -s -o output.html output.md
+3. Then run it
 
+```bash
+source ppaperwork.sh
+```
 
-Scripts and signification
-=========================
-
-.. table::
-
-    +-----------------------+-----------------------------------------------------------------------------------------+
-    | Script name           | Role                                                                                    |
-    +=======================+=========================================================================================+
-    | `print_ast.py`        | Print the output AST from cucumber's gherkin parser                                     |
-    +-----------------------+-----------------------------------------------------------------------------------------+
-    | `print_steps.py`      | Print the restructured tree from `gherkin_paperwork`                                    |
-    +-----------------------+-----------------------------------------------------------------------------------------+
-    | `print_md.py`         | Simple script that takes that tree and prints markdown code                             |
-    +-----------------------+-----------------------------------------------------------------------------------------+
-    | `print_md_visitor.py` | Cleaner script using the `NodeVisitor` contraption to correctly print out markdown code |
-    +-----------------------+-----------------------------------------------------------------------------------------+
+By default all the documentation is generated in 'documentation' directory
 

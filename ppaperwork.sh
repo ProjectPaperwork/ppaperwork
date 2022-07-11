@@ -1,3 +1,4 @@
+#!/bin/bash
 
 USER_MODE=1
 LOCAL_IMAGE=0
@@ -20,12 +21,9 @@ while [[ $# -gt 0 ]]; do
 done
 
 
-echo $USER_MODE
-echo $LOCAL_IMAGE
-
-
-IMAGE_PPAPERWORK="ghcr.io/xdoctorwhoz/ppaperwork:latest"
+IMAGE_PPAPERWORK="ghcr.io/projectpaperwork/ppaperwork:latest"
 if [ $LOCAL_IMAGE == 1 ] ; then
+        echo "RUN LOCAL IMAGE"
         IMAGE_PPAPERWORK="ppaperwork"
 fi;
 
@@ -37,6 +35,7 @@ if [ $USER_MODE == 1 ] ; then
         -e GROUP_ID=$(id -g) \
         $IMAGE_PPAPERWORK
 else
+        echo "RUN AS ROOT"
         docker run \
         -v $(pwd):/workdir \
         -e USER_ID=0 \

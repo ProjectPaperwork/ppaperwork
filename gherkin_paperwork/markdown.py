@@ -1,7 +1,4 @@
-"""
-┌───────────────────────────────┐
-│ Simple conversion to markdown │
-└───────────────────────────────┘
+"""Simple conversion to markdown 
 
  This module uses the NodeVisitor mechanism to output markdown content
  to some given file.

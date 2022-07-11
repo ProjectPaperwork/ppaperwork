@@ -27,4 +27,4 @@ if [ "$PWD" = / ]; then
 	cd /builder || exit 1
 fi
 
-exec $GOSU bash -c "python3 -m gherkin_paperwork | tee ppaperlog.txt"
+exec $GOSU bash -c "python3 -m gherkin_paperwork"

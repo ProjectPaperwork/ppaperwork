@@ -5,6 +5,8 @@ __pycache__/
 
 #
 gpaperlog.txt
+ppaperlog.txt
+documentation
 
 # C extensions
 *.so

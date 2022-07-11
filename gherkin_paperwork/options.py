@@ -1,10 +1,12 @@
 import os
 import yaml
 
-
 class Options:
     """Contains options of the worker
     """
+    
+    ###########################################################################
+    ###########################################################################
 
     def updateFromYml(self, ymlfilepath):
         # Check if the paperwork file is here
@@ -19,12 +21,19 @@ class Options:
         print(user_overrides)
         
         # Update options
-        self.jobs.update(user_overrides["jobs"])
-        self.common.update(user_overrides["doxygen"])
-        self.gherkin.update(user_overrides["gherkin"])
-        self.doxygen.update(user_overrides["doxygen"])
-        self.doxyfile.update(user_overrides["doxyfile"])
+        if "jobs" in user_overrides:
+            self.jobs.update(user_overrides["jobs"])
+        if "doxygen" in user_overrides:
+            self.common.update(user_overrides["doxygen"])
+        if "gherkin" in user_overrides:
+            self.gherkin.update(user_overrides["gherkin"])
+        if "doxygen" in user_overrides:
+            self.doxygen.update(user_overrides["doxygen"])
+        if "doxyfile" in user_overrides:
+            self.doxyfile.update(user_overrides["doxyfile"])
 
+    ###########################################################################
+    ###########################################################################
     
     def __init__(self) -> None:
         
@@ -51,27 +60,29 @@ class Options:
         self.doxygen["output_latex"]=True
         self.doxygen["output_pdf"]=True
         self.doxygen["include_gherkin"]=True
-        self.doxygen["ignore_path"]=['setup.py']
+        self.doxygen["ignore_path"]=['setup.py', '.github', '.git', '.gitignore']
 
         #######################################################################
         # DOXYFILE
         self.doxyfile = dict()
         self.doxyfile["DOXYFILE_ENCODING"]       = "UTF-8"
         self.doxyfile["PROJECT_NAME"]            = "NAMELESS"
-        self.doxyfile["PROJECT_LOGO"]            = "img/project_logo.svg"
+        self.doxyfile["PROJECT_LOGO"]            = "img/project_logo.png"
         self.doxyfile["OUTPUT_DIRECTORY"]        = "documentation/doxygen"
         self.doxyfile["CREATE_SUBDIRS"]          = "YES"
-        self.doxyfile["ALLOW_UNICODE_NAMES"]     = "NO"
+        self.doxyfile["ALLOW_UNICODE_NAMES"]     = "YES"
         self.doxyfile["OUTPUT_LANGUAGE"]         = "English"
         self.doxyfile["HTML_EXTRA_STYLESHEET"]   = "/doxygen-awesome-css/doxygen-awesome.css"
         self.doxyfile["MARKDOWN_SUPPORT"]        = "YES"
         self.doxyfile["USE_MDFILE_AS_MAINPAGE"]  = "README.md"
         self.doxyfile["IMAGE_PATH"]              = "img"
         self.doxyfile["GENERATE_LATEX"]          = "YES"
+        self.doxyfile["USE_PDFLATEX"]            = "YES"
         self.doxyfile["INPUT"]                   = "."
         self.doxyfile["RECURSIVE"]               = "YES"
         self.doxyfile["GENERATE_TREEVIEW"]       = "YES"
         self.doxyfile["EXCLUDE_PATTERNS"]        = "*/features/*"
+        
 
 
         
