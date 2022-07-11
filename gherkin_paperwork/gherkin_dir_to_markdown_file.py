@@ -1,6 +1,7 @@
 import os
 import shutil
 import logging
+import traceback
 
 from gherkin.dialect                import Dialect
 from gherkin.parser                 import Parser
@@ -62,17 +63,27 @@ def gherkin_dir_to_markdown_file(input_dir, output_file):
     # Convert features
     for (dirpath, dirnames, filenames) in os.walk(output_dir):
         for filename in filenames:
-            if filename.endswith('.feature'): 
+            if filename.endswith('.feature'):
+                
+                try:
+                    # Get filename of the file to convert
+                    file_path    = os.path.join(dirpath, filename)
+                    logging.info(f"Start converting '{file_path}'")
+                    
+                    # Get AST
+                    feature_file = Parser().parse( os.path.join(dirpath, filename) )["feature"]
+                    feature      = Feature.from_dict(feature_file)
+                    
+                    # Convert into markdown
+                    with open( output_file, "a" ) as fhandle:
+                        nv = Markdown_NodeVisitor(fhandle)
+                        nv.visit(feature)
+                        fhandle.write("\n\n\n\n")
 
-                file_path    = os.path.join(dirpath, filename)
-                feature_file = Parser().parse( os.path.join(dirpath, filename) )["feature"]
-                feature      = Feature.from_dict(feature_file)
-
-                with open( output_file, "a" ) as fhandle:
-                    nv = Markdown_NodeVisitor(fhandle)
-                    nv.visit(feature)
-                    fhandle.write("\n\n\n\n")
-
-                os.remove(file_path)
+                    # Clean working file
+                    os.remove(file_path)
+                except:
+                    logging.error(f"fail converting '{file_path}'")
+                    traceback.print_exc()
 
 

@@ -9,15 +9,23 @@ RUN apt-get update && \
     git \
     cmake \
     build-essential \
-    python3-dev \
+    python3-dev
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
     flex bison \
     graphviz \
     python3-pip \
     pandoc \
-    doxygen \
-    texlive-latex-base  \
+    doxygen
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    texlive-latex-base
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
     texlive-fonts-recommended \
-    texlive-fonts-extra \
+    texlive-fonts-extra
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
     texlive-latex-extra \
     gosu
 
