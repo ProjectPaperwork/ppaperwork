@@ -10,8 +10,9 @@ This project provides a docker image that builds your project documentations.
 
 2. Just copy the script **ppaperwork.sh** in your project.
 
+Go inside your project directory
+
 ```bash
-cd path/to/my/project
 wget https://raw.githubusercontent.com/ProjectPaperwork/ppaperwork/main/ppaperwork.sh
 ```
 
