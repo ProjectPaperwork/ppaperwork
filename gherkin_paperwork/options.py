@@ -52,6 +52,7 @@ class Options:
         # GHERKIN
         self.gherkin = dict()
         self.gherkin["features_dir"]=None
+        self.gherkin["features_generated_md_filename"]='features_unified.md'
 
         #######################################################################
         # DOXYGEN

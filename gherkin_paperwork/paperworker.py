@@ -41,7 +41,7 @@ class Paperworker:
         """
         self.opts = Options()
         self.workDir = os.getcwd()
-        self.paperworkFile = os.path.join(self.workDir, "gpaperwork.yml")
+        self.paperworkFile = os.path.join(self.workDir, "ppaperwork.yml")
 
     ###########################################################################
     ###########################################################################
@@ -159,19 +159,22 @@ class Paperworker:
             print(f"JOB: Gherkin => disabled")
             return
         print(f"JOB: Gherkin")
+        
+        # Local variables
+        generated_md_filepath = os.path.join(self.opts.common["output_directory"], 'gherkin', 'md_file', self.opts.gherkin["features_generated_md_filename"])
 
         # markdown file
-        gherkin_dir_to_markdown_file(self.opts.gherkin["features_dir"], self.opts.common["output_directory"] + '/gherkin/md_file/features.md')
+        gherkin_dir_to_markdown_file(self.opts.gherkin["features_dir"], generated_md_filepath)
 
         # html
         os.makedirs( self.opts.common["output_directory"] + '/gherkin/html', exist_ok=True )
-        cmds = [ "pandoc", "-s", "-o", self.opts.common["output_directory"] + '/gherkin/html/feature.html', self.opts.common["output_directory"] + '/gherkin/md_file/features.md' ]
+        cmds = [ "pandoc", "-s", "-o", self.opts.common["output_directory"] + '/gherkin/html/feature.html', generated_md_filepath ]
         print_cmds(cmds)
         subprocess.run(cmds)
         
         # docx
         os.makedirs( self.opts.common["output_directory"] + '/gherkin/docx', exist_ok=True )
-        cmds = [ "pandoc", "-s", "-o", self.opts.common["output_directory"] + '/gherkin/docx/feature.docx', self.opts.common["output_directory"] + '/gherkin/md_file/features.md' ]
+        cmds = [ "pandoc", "-s", "-o", self.opts.common["output_directory"] + '/gherkin/docx/feature.docx', generated_md_filepath ]
         print_cmds(cmds)
         subprocess.run(cmds)
         
