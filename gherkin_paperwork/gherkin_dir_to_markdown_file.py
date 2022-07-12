@@ -35,29 +35,29 @@ def gherkin_dir_to_markdown_file(input_dir, output_file):
 
     # Check input directory
     if input_dir == None:
-        logging.info(f"Input features directory is not provided : {input_dir}")
+        print(f"Input features directory is not provided : {input_dir}")
         return
 
     # Logs
-    logging.info(f"input_dir    : {input_dir}")
-    logging.info(f"output_dir   : {output_dir}")
-    logging.info(f"output_file  : {output_file}")
+    print(f"input_dir    : {input_dir}")
+    print(f"output_dir   : {output_dir}")
+    print(f"output_file  : {output_file}")
 
     # Delete ouput if already exist
     if os.path.isdir(output_dir):
-        logging.info(f"delete directory '{output_dir}'")
+        print(f"delete directory '{output_dir}'")
         shutil.rmtree(output_dir)
 
     # Copy the entire input directory
-    logging.info(f"copy files from '{input_dir}' to '{output_dir}'")
+    print(f"copy files from '{input_dir}' to '{output_dir}'")
     shutil.copytree(input_dir, output_dir) 
 
     # Embed the first '.md' file found in the features directory
     readme_path=find_first_md_file_in_dir(output_dir)
-    if os.path.isfile(readme_path):
-        logging.info(f"merge '{readme_path}' to '{output_file}'")
+    if readme_path != None and os.path.isfile(readme_path):
+        print(f"merge '{readme_path}' to '{output_file}'")
         shutil.copyfile(readme_path, output_file)
-        logging.info(f"remove '{readme_path}'")
+        print(f"remove '{readme_path}'")
         os.remove(readme_path)
 
     # Convert features
@@ -68,7 +68,7 @@ def gherkin_dir_to_markdown_file(input_dir, output_file):
                 try:
                     # Get filename of the file to convert
                     file_path    = os.path.join(dirpath, filename)
-                    logging.info(f"Start converting '{file_path}'")
+                    print(f"Start converting '{file_path}'")
                     
                     # Get AST
                     feature_file = Parser().parse( os.path.join(dirpath, filename) )["feature"]
@@ -83,7 +83,7 @@ def gherkin_dir_to_markdown_file(input_dir, output_file):
                     # Clean working file
                     os.remove(file_path)
                 except:
-                    logging.error(f"fail converting '{file_path}'")
+                    print(f"fail converting '{file_path}'")
                     traceback.print_exc()
 
 

@@ -126,7 +126,11 @@ class Paperworker:
 
         # Print job configuration
         print(f"=================================================")
-        print("OPTIONS")
+        print("FILES IN WORKING DIRECTORY ${self.workDir}\n")
+        arr = os.listdir(self.workDir)
+        print(arr)
+        print(f"=================================================")
+        print("OPTIONS\n")
         sys.stdout.flush()
         print("you can override using 'ppaperwork.yml'")
         print(yaml.dump(self.opts, default_flow_style=False))
