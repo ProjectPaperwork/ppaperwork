@@ -3,6 +3,7 @@ import sys
 import yaml
 import shutil
 import subprocess
+from datetime       import datetime
 from dataclasses    import dataclass, field
 from typing         import List
 from textwrap       import dedent
@@ -106,9 +107,10 @@ class Paperworker:
     def work(self):
         """Main working function
         """
-        print(f"Gherkin Paperwork !")
+        # Main title
+        print(f"# Project Paperwork {datetime.now().strftime('%d/%m/%Y > %H:%M:%S')} \n\n")
         sys.stdout.flush()
-        
+    
         #
         hooks_before_user_overrides(self)
 
