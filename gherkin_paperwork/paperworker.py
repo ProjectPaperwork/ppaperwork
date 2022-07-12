@@ -217,22 +217,22 @@ class Paperworker:
         # Cleanup
         os.remove("Doxyfile")
 
-        # Check if the user wants the doxygen generation
-        if self.opts.doxygen["output_pdf"]:
-            # Generate the pdf
-            latex_path = self.opts.doxyfile["OUTPUT_DIRECTORY"] + '/' + 'latex'
-            print(f"=================================================")
-            print(f"Doxygen PDF into {latex_path}")
-            doxygen_log_file=self.subprocessLogFile('doxygen_latex_to_pdf.txt')
-            try:
-                with open(doxygen_log_file, "w") as logfile:
-                    subprocess.run([ "make" ], shell=True, check=True, cwd=latex_path, stdout=logfile, stderr=logfile)
+        # # Check if the user wants the doxygen generation
+        # if self.opts.doxygen["output_pdf"]:
+        #     # Generate the pdf
+        #     latex_path = self.opts.doxyfile["OUTPUT_DIRECTORY"] + '/' + 'latex'
+        #     print(f"=================================================")
+        #     print(f"Doxygen PDF into {latex_path}")
+        #     doxygen_log_file=self.subprocessLogFile('doxygen_latex_to_pdf.txt')
+        #     try:
+        #         with open(doxygen_log_file, "w") as logfile:
+        #             subprocess.run([ "make" ], shell=True, check=True, cwd=latex_path, stdout=logfile, stderr=logfile)
             
-                # Copy the pdf at the right place
-                os.makedirs( self.opts.doxyfile["OUTPUT_DIRECTORY"] + '/pdf', exist_ok=True )
-                shutil.copyfile(self.opts.doxyfile["OUTPUT_DIRECTORY"] + '/latex/refman.pdf', self.opts.doxyfile["OUTPUT_DIRECTORY"] + '/pdf/manual.pdf')
-            except:
-                print(f"DOXYGEN LATEX TO PDF FAILED (see {doxygen_log_file})")            
+        #         # Copy the pdf at the right place
+        #         os.makedirs( self.opts.doxyfile["OUTPUT_DIRECTORY"] + '/pdf', exist_ok=True )
+        #         shutil.copyfile(self.opts.doxyfile["OUTPUT_DIRECTORY"] + '/latex/refman.pdf', self.opts.doxyfile["OUTPUT_DIRECTORY"] + '/pdf/manual.pdf')
+        #     except:
+        #         print(f"DOXYGEN LATEX TO PDF FAILED (see {doxygen_log_file})")            
  
     ###########################################################################
     ###########################################################################

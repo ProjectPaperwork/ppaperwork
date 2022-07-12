@@ -19,14 +19,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
     doxygen
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    texlive-latex-base
-
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    texlive-fonts-recommended \
-    texlive-fonts-extra
-
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    texlive-latex-extra \
     gosu
 
 RUN pip install gherkin-official
