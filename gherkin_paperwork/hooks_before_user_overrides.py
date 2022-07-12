@@ -3,15 +3,14 @@ import os
 ###############################################################################
 
 def hooks_before_user_overrides(worker):
-    """
-    """
+    print("## Hooks before user overrides\n")
     append_dir_with_image_to_doxyfile(worker)
+    print("\n")
 
 ###############################################################################
 
 def append_dir_with_image_to_doxyfile(worker):
-    """Doxygen needs to know where are the images to store them with html output
-    """
+    print(" - Doxygen needs to know where are the images to store them with html output")
     image_path=""
     for root, dirs, files in os.walk(worker.workDir):
         for dir in dirs:

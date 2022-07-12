@@ -15,7 +15,9 @@ from gherkin_paperwork.gherkin_dir_to_markdown_file import gherkin_dir_to_markdo
 from gherkin_paperwork.options                      import Options
 
 
-from gherkin_paperwork.hooks_before_user_overrides import hooks_before_user_overrides
+from gherkin_paperwork.hooks_before_user_overrides  import hooks_before_user_overrides
+from gherkin_paperwork.hooks_after_user_overrides   import hooks_after_user_overrides
+
 
 
 def directory_find(atom, root='.'):
@@ -108,8 +110,7 @@ class Paperworker:
         """Main working function
         """
         # Main title
-        print(f"# Project Paperwork {datetime.now().strftime('%d/%m/%Y > %H:%M:%S')} \n\n")
-        sys.stdout.flush()
+        print(f"# Project Paperwork {datetime.now().strftime('%d/%m/%Y > %H:%M:%S')}\n", flush=True)
     
         #
         hooks_before_user_overrides(self)
@@ -123,22 +124,18 @@ class Paperworker:
         sys.stdout.flush()
 
         #
+        hooks_after_user_overrides(self)
         self.adaptSubOptions()
         sys.stdout.flush()
 
         # Print job configuration
-        print(f"=================================================")
-        print("FILES IN WORKING DIRECTORY ${self.workDir}\n")
+        print("## FILES IN WORKING DIRECTORY ${self.workDir}\n")
         arr = os.listdir(self.workDir)
         print(arr)
-        print(f"=================================================")
-        print("OPTIONS\n")
-        sys.stdout.flush()
+        print("## OPTIONS\n")
         print("you can override using 'ppaperwork.yml'")
         print(yaml.dump(self.opts, default_flow_style=False))
-        sys.stdout.flush()
-        print(f"=================================================")
-
+        
         
         # Delete ouput if already exist
         if os.path.isdir(self.opts.common["output_directory"]):
