@@ -1,4 +1,3 @@
-import logging
 import os
 import sys
 import yaml
@@ -97,7 +96,7 @@ class Paperworker:
 
         # Disable gherkin job if the features dir is not found or provided
         if not self.opts.gherkin["features_dir"]:
-            logging.error(f"gherkin.features_dir is not defined {self.opts.gherkin['features_dir']} => gherkin job is disabled")
+            print(f"gherkin.features_dir is not defined {self.opts.gherkin['features_dir']} => gherkin job is disabled")
             self.opts.jobs["gherkin"] = False
 
            
@@ -126,18 +125,18 @@ class Paperworker:
         sys.stdout.flush()
 
         # Print job configuration
-        logging.info(f"=================================================")
-        logging.info("OPTIONS")
+        print(f"=================================================")
+        print("OPTIONS")
         sys.stdout.flush()
-        logging.info("you can override using 'ppaperwork.yml'")
+        print("you can override using 'ppaperwork.yml'")
         print(yaml.dump(self.opts, default_flow_style=False))
         sys.stdout.flush()
-        logging.info(f"=================================================")
+        print(f"=================================================")
 
         
         # Delete ouput if already exist
         if os.path.isdir(self.opts.common["output_directory"]):
-            logging.info(f"reset output directory '{self.opts.common['output_directory']}'")
+            print(f"reset output directory '{self.opts.common['output_directory']}'")
             shutil.rmtree(self.opts.common["output_directory"])
         os.makedirs(self.opts.common["output_directory"])
 
@@ -175,6 +174,15 @@ class Paperworker:
         # docx
         os.makedirs( self.opts.common["output_directory"] + '/gherkin/docx', exist_ok=True )
         cmds = [ "pandoc", "-s", "-o", self.opts.common["output_directory"] + '/gherkin/docx/feature.docx', generated_md_filepath ]
+        
+        # 
+        docx_templatepath = os.path.join( os.getcwd(), "file/template_docx.docx")
+        if os.path.isfile(docx_templatepath):
+            print(f"Docx template found ! {docx_templatepath}")
+            cmds.append("--reference-doc")
+            cmds.append(docx_templatepath)
+        else:
+            print("No docx template found !")
         print_cmds(cmds)
         subprocess.run(cmds)
         
@@ -224,7 +232,7 @@ class Paperworker:
                 os.makedirs( self.opts.doxyfile["OUTPUT_DIRECTORY"] + '/pdf', exist_ok=True )
                 shutil.copyfile(self.opts.doxyfile["OUTPUT_DIRECTORY"] + '/latex/refman.pdf', self.opts.doxyfile["OUTPUT_DIRECTORY"] + '/pdf/manual.pdf')
             except:
-                logging.error(f"DOXYGEN LATEX TO PDF FAILED (see {doxygen_log_file})")            
+                print(f"DOXYGEN LATEX TO PDF FAILED (see {doxygen_log_file})")            
  
     ###########################################################################
     ###########################################################################
