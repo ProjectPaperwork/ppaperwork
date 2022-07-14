@@ -73,13 +73,6 @@ class Paperworker:
         except:
             print("No 'README.md' file found to extract the name")
 
-        # Update doxygen input from root directory
-        dox_inputs=""
-        for element in os.listdir(self.workDir):
-            if element != "setup.py":
-                dox_inputs+=f" {element}"
-        self.opts.doxyfile["INPUT"] = dox_inputs
-        
 
         #
         self.opts.gherkin["features_dir"] = directory_find("features")

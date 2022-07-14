@@ -1,0 +1,10 @@
+doxygen:
+  ignore_path:
+  - setup.py
+  - .github/*
+  - .git/*
+  - .gitignore
+  - documentation/*
+  - file/must_be_ignored
+  - "*__pycache__*"
+

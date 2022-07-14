@@ -11,7 +11,7 @@ class Options:
     def updateFromYml(self, ymlfilepath):
         # Check if the paperwork file is here
         if not os.path.isfile(ymlfilepath):
-            print(f"No user overrides '{ymlfilepath}'\n")
+            print(f"**No user overrides ('ppaperwork.yml' on project root dir)**\n")
             return
 
         # Parse file
@@ -61,7 +61,7 @@ class Options:
         self.doxygen["output_latex"]=False
         # self.doxygen["output_pdf"]=True
         self.doxygen["include_gherkin"]=True
-        self.doxygen["ignore_path"]=['setup.py', '.github', '.git', '.gitignore']
+        self.doxygen["ignore_path"]=['setup.py', '.github/*', '.git/*', '.gitignore', 'documentation/*']
 
         #######################################################################
         # DOXYFILE

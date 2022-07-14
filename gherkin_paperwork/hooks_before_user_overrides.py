@@ -1,4 +1,5 @@
 import os
+from fnmatch import fnmatch
 
 ###############################################################################
 
@@ -10,7 +11,7 @@ def hooks_before_user_overrides(worker):
 ###############################################################################
 
 def append_dir_with_image_to_doxyfile(worker):
-    print(" - Doxygen needs to know where are the images to store them with html output")
+    print(" - Fill Doxygen IMAGE_PATH => needs to know where are the images to store them with html output")
     image_path=""
     for root, dirs, files in os.walk(worker.workDir):
         for dir in dirs:
@@ -21,3 +22,4 @@ def append_dir_with_image_to_doxyfile(worker):
     worker.opts.doxyfile["IMAGE_PATH"] = image_path
 
 ###############################################################################
+
