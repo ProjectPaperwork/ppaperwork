@@ -33,11 +33,11 @@ if [ $USER_MODE == 1 ] ; then
         -v $(pwd):/workdir \
         -e USER_ID=$(id -u) \
         -e GROUP_ID=$(id -g) \
-        $IMAGE_PPAPERWORK work.sh
+        $IMAGE_PPAPERWORK bash work.sh
 else
         echo "<!-- RUN AS ROOT -->"
         docker run \
         -v $(pwd):/workdir \
         -e USER_ID=0 \
-        $IMAGE_PPAPERWORK work.sh
+        $IMAGE_PPAPERWORK bash work.sh
 fi;

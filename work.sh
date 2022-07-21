@@ -27,11 +27,13 @@ if [ "$PWD" = / ]; then
 	cd /builder || exit 1
 fi
 
-if [[ -z "$@" ]]; then
-  echo "no cmd passed" 
-#   exec $GOSU bash
-else 
-  cmd="$@"
+# if [[ -z "$@" ]]; then
+#   echo "no cmd passed" 
+# #   exec $GOSU bash
+# else 
+  cmd="python3 -m gherkin_paperwork"
   echo "run cmd $cmd" 
   exec $GOSU bash -c "$cmd"; 
-fi
+# fi
+
+

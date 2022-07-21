@@ -35,13 +35,14 @@ RUN chmod +x ./package.sh
 RUN ./package.sh -i
 
 #
-RUN echo "python3 -m gherkin_paperwork" > /bin/work.sh
+COPY ./work.sh /bin/work.sh
+# RUN echo "python3 -m gherkin_paperwork" > /bin/work.sh
 RUN chmod +x /bin/work.sh
 
 #
 WORKDIR /workdir
 
-COPY ./container-entrypoint /container-entrypoint
-RUN chmod +x /container-entrypoint
-ENTRYPOINT [ "/container-entrypoint" ]
+# COPY ./container-entrypoint /container-entrypoint
+# RUN chmod +x /container-entrypoint
+# ENTRYPOINT [ "/container-entrypoint" ]
 
