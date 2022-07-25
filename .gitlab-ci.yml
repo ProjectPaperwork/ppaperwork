@@ -1,0 +1,12 @@
+stages:
+  - documentation
+
+documentation:
+  stage: documentation
+  image: ghcr.io/projectpaperwork/ppaperwork:latest
+  script:
+    - work.sh
+  artifacts:
+    name: "documentation"
+    paths:
+      - documentation/
