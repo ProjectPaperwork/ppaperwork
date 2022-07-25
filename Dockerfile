@@ -21,9 +21,15 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
     gosu
 
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    tzdata
+
+RUN dpkg-reconfigure tzdata
+
 RUN pip install gherkin-official
 RUN pip install tabulate
 RUN pip install PyYAML
+RUN pip install pytz tzlocal
 
 RUN cd / && git clone https://github.com/jothepro/doxygen-awesome-css.git
 
@@ -41,8 +47,4 @@ RUN chmod +x /bin/work.sh
 
 #
 WORKDIR /workdir
-
-# COPY ./container-entrypoint /container-entrypoint
-# RUN chmod +x /container-entrypoint
-# ENTRYPOINT [ "/container-entrypoint" ]
 

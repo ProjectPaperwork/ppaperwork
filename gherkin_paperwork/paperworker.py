@@ -1,8 +1,13 @@
 import os
 import sys
+import pytz
 import yaml
 import shutil
 import subprocess
+import time
+from time import gmtime, strftime
+from tzlocal import get_localzone
+
 from datetime       import datetime
 from dataclasses    import dataclass, field
 from typing         import List
@@ -102,9 +107,13 @@ class Paperworker:
     def work(self):
         """Main working function
         """
+        # Tz does not work yet
+        d = datetime.now(tz=get_localzone())
+        gen_datetime = d.strftime('%d/%m/%Y > %H:%M:%S')
+        
         # Main title
-        print(f"# Project Paperwork {datetime.now().strftime('%d/%m/%Y > %H:%M:%S')}\n", flush=True)
-    
+        print(f"# Project Paperwork {gen_datetime}\n", flush=True)
+
         #
         hooks_before_user_overrides(self)
 
@@ -130,6 +139,7 @@ class Paperworker:
         print(yaml.dump(self.opts, default_flow_style=False))
         
         
+        
         # Delete ouput if already exist
         if os.path.isdir(self.opts.common["output_directory"]):
             print(f"reset output directory '{self.opts.common['output_directory']}'")
@@ -138,6 +148,20 @@ class Paperworker:
 
 
 
+        # Create a little reade for new users
+        readme_filepath=os.path.join(self.opts.common["output_directory"], 'README.md')
+        with open(readme_filepath, "w") as rdfile:
+            rdfile.write(f'# Project Paperwork Documentation\n\n')
+            rdfile.write(f'generation date time : {gen_datetime} \n\n')
+            rdfile.write(f'This documentation has been generated with [ppaperwork](https://github.com/ProjectPaperwork/ppaperwork/pkgs/container/ppaperwork) \n\n')
+            rdfile.write(f'# Open Doxygen Documentation\n\n')
+            rdfile.write(f'To open the doxygen documentation doucle click on:\n\n')
+            rdfile.write(f'- *doxygen-documentation.html*\n')
+            rdfile.write(f'- *doxygen/html/index.html*\n')
+            rdfile.write(f'\n')
+            rdfile.write(f'your web browser should open and display the doxygen html documentation')
+                
+            
         #
         sys.stdout.flush()
         self.gherkin()
@@ -210,6 +234,11 @@ class Paperworker:
         with open(doxygen_log_file, "w") as logfile:
             subprocess.run("doxygen", shell=True, check=True, stdout=logfile, stderr=logfile)
 
+        # Create a link to redirect to inddex.html and ease user interaction
+        doxygen_redir_file_path=os.path.join(self.opts.common["output_directory"], 'doxygen-documentation.html')
+        with open(doxygen_redir_file_path, "w") as redirfile:
+            redirfile.write('<meta http-equiv="refresh" content="0; URL=doxygen/html/index.html"/>')
+        
         # Cleanup
         os.remove("Doxyfile")
 
