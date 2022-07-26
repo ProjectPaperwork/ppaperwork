@@ -75,7 +75,7 @@ class Options:
         self.doxyfile["OUTPUT_LANGUAGE"]         = "English"
         self.doxyfile["HTML_EXTRA_STYLESHEET"]   = "/doxygen-awesome-css/doxygen-awesome.css"
         self.doxyfile["MARKDOWN_SUPPORT"]        = "YES"
-        self.doxyfile["USE_MDFILE_AS_MAINPAGE"]  = "README.md"
+        self.doxyfile["USE_MDFILE_AS_MAINPAGE"]  = "./README.md"
         self.doxyfile["IMAGE_PATH"]              = "img"
         self.doxyfile["GENERATE_LATEX"]          = "YES"
         self.doxyfile["USE_PDFLATEX"]            = "YES"
