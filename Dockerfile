@@ -6,6 +6,9 @@ LABEL org.opencontainers.image.source https://github.com/ProjectPaperwork/ppaper
 RUN echo "https://dl-cdn.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories
 RUN apk update
 
+# Timezone and config scripts
+RUN apk add tzdata alpine-conf
+
 # Main tools
 RUN apk add python3 py3-pip py3-wheel gosu git bash libffi libffi-dev
 
