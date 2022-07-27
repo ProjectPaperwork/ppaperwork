@@ -1,50 +1,43 @@
-FROM ubuntu:22.04
-
-#
+FROM pandoc/core as pandoc_stage
+FROM alpine:3.14
 LABEL org.opencontainers.image.source https://github.com/ProjectPaperwork/ppaperwork
 
-#
-RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    git \
-    cmake \
-    build-essential \
-    python3-dev
+# Enable testing repository (for gosu and pandoc), update
+RUN echo "https://dl-cdn.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories
+RUN apk update
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    flex bison \
-    graphviz \
-    python3-pip \
-    pandoc \
-    doxygen
+# Timezone and config scripts
+RUN apk add tzdata alpine-conf
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    gosu
+# Main tools
+RUN apk add python3 py3-pip py3-wheel gosu git bash libffi libffi-dev
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    tzdata
+# Documentation tools
+RUN apk add doxygen graphviz
 
-RUN dpkg-reconfigure tzdata
+# Install pandoc from docker image
+RUN apk add gmp lua5.3 lua5.3-dev
+COPY --from=pandoc_stage /usr/local/bin/pandoc /usr/bin/pandoc
 
+# Install python dependencies
 RUN pip install gherkin-official
 RUN pip install tabulate
 RUN pip install PyYAML
 RUN pip install pytz tzlocal
 
+# Download doxygen template
 RUN cd / && git clone https://github.com/jothepro/doxygen-awesome-css.git
 
-#
+# Setup paperwork
 WORKDIR /setup
 COPY . /setup/gherkin-paperwork
+
 WORKDIR /setup/gherkin-paperwork
 RUN chmod +x ./package.sh
 RUN ./package.sh -i
 
-#
+# Setup work
 COPY ./work.sh /bin/work.sh
-# RUN echo "python3 -m gherkin_paperwork" > /bin/work.sh
 RUN chmod +x /bin/work.sh
 
-#
 WORKDIR /workdir
-

@@ -21,7 +21,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 
-IMAGE_PPAPERWORK="ghcr.io/projectpaperwork/ppaperwork:latest"
+[ -z $IMAGE_PPAPERWORK ] && IMAGE_PPAPERWORK="ghcr.io/projectpaperwork/ppaperwork:latest"
 if [ $LOCAL_IMAGE == 1 ] ; then
         echo "<!-- RUN LOCAL IMAGE -->"
         IMAGE_PPAPERWORK="ppaperwork"
@@ -33,10 +33,11 @@ if [ $USER_MODE == 1 ] ; then
         -v $(pwd):/workdir \
         -e USER_ID=$(id -u) \
         -e GROUP_ID=$(id -g) \
+	-e TIMEZONE=$(cat /etc/timezone) \
         $IMAGE_PPAPERWORK bash work.sh
 else
         echo "<!-- RUN AS ROOT -->"
-        docker run \
+        docker run --rm \
         -v $(pwd):/workdir \
         -e USER_ID=0 \
         $IMAGE_PPAPERWORK bash work.sh
