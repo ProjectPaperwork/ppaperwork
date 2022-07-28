@@ -19,20 +19,6 @@ def disable_doxygen_latex_if_option_disabled(worker):
 
 ###############################################################################
 
-# def fill_doxyfile_input_flag(worker):
-#     print(" - Fill Doxygen INPUT with directories of the repository expect doxygen/ignore_path")
-#     input_paths=""
-#     for element in os.listdir(worker.workDir):
-#         skip=False
-#         for pattern in worker.opts.doxygen["ignore_path"]:
-#             if fnmatch(element, pattern):
-#                 print(f"        element ignored [{element}] / [{pattern}]")
-#                 skip=True
-#         if not skip:
-#             input_paths+=f" {element}"            
-#     worker.opts.doxyfile["INPUT"] = input_paths
-
-
 def fill_doxyfile_input_flag(worker):
     print(" - Fill Doxygen INPUT with directories of the repository expect doxygen/ignore_path")
     input_paths=""
@@ -64,4 +50,7 @@ def fill_doxyfile_input_flag(worker):
 
 ###############################################################################
 
-        
+# def _doxyfile_input_flag(worker):
+#     print(" - Fill Doxygen INPUT with directories of the repository expect doxygen/ignore_path")
+
+###############################################################################
