@@ -31,6 +31,7 @@ RUN cd / && git clone https://github.com/jothepro/doxygen-awesome-css.git
 # Setup paperwork
 WORKDIR /setup
 COPY . /setup/gherkin-paperwork
+COPY ./img/project_logo.png /setup/project_logo.png
 
 WORKDIR /setup/gherkin-paperwork
 RUN chmod +x ./package.sh
