@@ -7,6 +7,7 @@ def hooks_after_user_overrides(worker):
     print("## Hooks after user overrides\n")
     disable_doxygen_latex_if_option_disabled(worker)
     fill_doxyfile_input_flag(worker)
+    doxyfile_append_project_version_from_git_tag(worker)
     print("\n")
 
 ###############################################################################
@@ -50,7 +51,12 @@ def fill_doxyfile_input_flag(worker):
 
 ###############################################################################
 
-# def _doxyfile_input_flag(worker):
-#     print(" - Fill Doxygen INPUT with directories of the repository expect doxygen/ignore_path")
+def doxyfile_append_project_version_from_git_tag(worker):
+    print(" - Doxyfile append project version from git tag")
+    version = os.getenv("PROJECT_VERSION_GIT_TAG")
+    if version:
+        worker.opts.doxyfile["PROJECT_NUMBER"] = version
+    else:
+        print("\t\tNo version provided")
 
 ###############################################################################
