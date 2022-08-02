@@ -7,6 +7,11 @@ TIMEZONE=${TIMEZONE:UTC}
 echo "Set timezone to ${TIMEZONE}"
 setup-timezone -z ${TIMEZONE}
 
+# Get version from git
+git config --global --add safe.directory '*'
+export PROJECT_VERSION_GIT_TAG=$(git tag --points-at HEAD | head -n 1)
+echo "Version (first current git tag) : $PROJECT_VERSION_GIT_TAG"
+
 # script is ran as root, so root!
 if [ "$USER_ID" == 0 ]; then
 	# We shall run everything as root

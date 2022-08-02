@@ -92,8 +92,7 @@ class Paperworker:
 
         # 
         if self.opts.doxygen["include_gherkin"]:
-            input_str = self.opts.doxyfile["INPUT"]
-            input_str += f' {self.opts.common["output_directory"]}/gherkin/md_file'
+            self.opts.doxyfile["INPUT"] += f' {self.opts.common["output_directory"]}/gherkin/md_file'
 
         # Disable gherkin job if the features dir is not found or provided
         if not self.opts.gherkin["features_dir"]:
@@ -134,6 +133,7 @@ class Paperworker:
         print("## FILES IN WORKING DIRECTORY ${self.workDir}\n")
         arr = os.listdir(self.workDir)
         print(arr)
+        print("\n")
         print("## OPTIONS\n")
         print("you can override using 'ppaperwork.yml'")
         print(yaml.dump(self.opts, default_flow_style=False))
@@ -148,7 +148,7 @@ class Paperworker:
 
 
 
-        # Create a little reade for new users
+        # Create a little readme for new users
         readme_filepath=os.path.join(self.opts.common["output_directory"], 'README.md')
         with open(readme_filepath, "w") as rdfile:
             rdfile.write(f'# Project Paperwork Documentation\n\n')

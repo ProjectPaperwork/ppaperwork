@@ -18,19 +18,22 @@ class Options:
         user_overrides=None
         with open(ymlfilepath) as file:
             user_overrides = yaml.load(file, Loader=yaml.FullLoader)
-        print(user_overrides)
         
         # Update options
-        if "jobs" in user_overrides:
-            self.jobs.update(user_overrides["jobs"])
-        if "doxygen" in user_overrides:
-            self.common.update(user_overrides["doxygen"])
-        if "gherkin" in user_overrides:
-            self.gherkin.update(user_overrides["gherkin"])
-        if "doxygen" in user_overrides:
-            self.doxygen.update(user_overrides["doxygen"])
-        if "doxyfile" in user_overrides:
-            self.doxyfile.update(user_overrides["doxyfile"])
+        if not user_overrides:
+            print("**ERROR Parsing ppaperwork.yml**")
+        else:
+            print(user_overrides)
+            if "jobs" in user_overrides:
+                self.jobs.update(user_overrides["jobs"])
+            if "doxygen" in user_overrides:
+                self.common.update(user_overrides["doxygen"])
+            if "gherkin" in user_overrides:
+                self.gherkin.update(user_overrides["gherkin"])
+            if "doxygen" in user_overrides:
+                self.doxygen.update(user_overrides["doxygen"])
+            if "doxyfile" in user_overrides:
+                self.doxyfile.update(user_overrides["doxyfile"])
 
     ###########################################################################
     ###########################################################################
@@ -61,7 +64,7 @@ class Options:
         self.doxygen["output_latex"]=False
         # self.doxygen["output_pdf"]=True
         self.doxygen["include_gherkin"]=True
-        self.doxygen["ignore_path"]=['setup.py', '.github/*', '.git/*', '.gitignore', 'documentation/*']
+        self.doxygen["ignore_path"]=['setup.py', '.github/*', '.git/*', '.gitignore', 'documentation/*', '*/features/*']
 
         #######################################################################
         # DOXYFILE
