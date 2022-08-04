@@ -16,13 +16,13 @@ from textwrap       import dedent
 from io                             import (StringIO)
 from tabulate                       import tabulate
 
-from gherkin_paperwork.gherkin_dir_to_markdown_file import gherkin_dir_to_markdown_file
 from gherkin_paperwork.options                      import Options
 
+from gherkin_paperwork.gherkin_dir_to_dox_dir       import gherkin_dir_to_dox_dir
+from gherkin_paperwork.gherkin_dir_to_markdown_file import gherkin_dir_to_markdown_file
 
 from gherkin_paperwork.hooks_before_user_overrides  import hooks_before_user_overrides
 from gherkin_paperwork.hooks_after_user_overrides   import hooks_after_user_overrides
-
 
 
 def directory_find(atom, root='.'):
@@ -173,16 +173,22 @@ class Paperworker:
     def gherkin(self):
         """Run the gherkin job
         """
-        print(f"=================================================")
+        # Log
+        print("## Gherkin Actions\n")
         if not self.opts.jobs["gherkin"]:
-            print(f"JOB: Gherkin => disabled")
+            print(f"!!! disabled !!!\n")
             return
-        print(f"JOB: Gherkin")
-        
+    
         # Local variables
         generated_md_filepath = os.path.join(self.opts.common["output_directory"], 'gherkin', 'md_file', self.opts.gherkin["features_generated_md_filename"])
+        generated_md_dirpath = os.path.join(self.opts.common["output_directory"], 'gherkin', 'md_dir')
+
+        # markdown dir
+        print("### Convert features into a directory for doxygen integration\n")
+        gherkin_dir_to_dox_dir(self.opts.gherkin["features_dir"], generated_md_dirpath)
 
         # markdown file
+        print("### Convert features into a unique markdown file\n")
         gherkin_dir_to_markdown_file(self.opts.gherkin["features_dir"], generated_md_filepath)
 
         # html
