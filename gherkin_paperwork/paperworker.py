@@ -76,7 +76,7 @@ class Paperworker:
                     first_line = first_line[:-1] # \n
                 self.opts.doxyfile["PROJECT_NAME"] = first_line
         except:
-            print("No 'README.md' file found to extract the name")
+            print("No 'README.md' file found to extract the name", flush=True)
 
 
         #
@@ -92,7 +92,7 @@ class Paperworker:
 
         # 
         if self.opts.doxygen["include_gherkin"]:
-            self.opts.doxyfile["INPUT"] += f' {self.opts.common["output_directory"]}/gherkin/md_file'
+            self.opts.doxyfile["INPUT"] += f' {self.opts.common["output_directory"]}/gherkin/md_dox'
 
         # Disable gherkin job if the features dir is not found or provided
         if not self.opts.gherkin["features_dir"]:
@@ -111,7 +111,8 @@ class Paperworker:
         gen_datetime = d.strftime('%d/%m/%Y > %H:%M:%S')
         
         # Main title
-        print(f"# Project Paperwork {gen_datetime}\n", flush=True)
+        print(f"\nProject Paperwork {gen_datetime}")
+        print(f"===============================================================\n")
 
         #
         hooks_before_user_overrides(self)
@@ -129,17 +130,7 @@ class Paperworker:
         self.adaptSubOptions()
         sys.stdout.flush()
 
-        # Print job configuration
-        print("## FILES IN WORKING DIRECTORY ${self.workDir}\n")
-        arr = os.listdir(self.workDir)
-        print(arr)
-        print("\n")
-        print("## OPTIONS\n")
-        print("you can override using 'ppaperwork.yml'")
-        print(yaml.dump(self.opts, default_flow_style=False))
-        
-        
-        
+    
         # Delete ouput if already exist
         if os.path.isdir(self.opts.common["output_directory"]):
             print(f"reset output directory '{self.opts.common['output_directory']}'")
@@ -147,6 +138,22 @@ class Paperworker:
         os.makedirs(self.opts.common["output_directory"])
 
 
+        # Print job configuration
+        print(f"\nFILES IN WORKING DIRECTORY ${self.workDir}")
+        print("----------------------------------------------------------------\n")
+        arr = os.listdir(self.workDir)
+        print(arr)
+        print("\n")
+
+
+
+        print("\nOPTIONS")
+        print("----------------------------------------------------------------\n")
+        ppyml_filepath=self.subprocessLogFile('ppaperwork.yml')
+        print(f"you can override using 'ppaperwork.yml' (current options have been exported to {ppyml_filepath})")
+        with open(ppyml_filepath, "w") as fd:
+            fd.write(yaml.dump(self.opts, default_flow_style=False))
+        
 
         # Create a little readme for new users
         readme_filepath=os.path.join(self.opts.common["output_directory"], 'README.md')
@@ -174,14 +181,15 @@ class Paperworker:
         """Run the gherkin job
         """
         # Log
-        print("## Gherkin Actions\n")
+        print("\nGherkin Actions")
+        print("----------------------------------------------------------------\n")
         if not self.opts.jobs["gherkin"]:
             print(f"!!! disabled !!!\n")
             return
     
         # Local variables
         generated_md_filepath = os.path.join(self.opts.common["output_directory"], 'gherkin', 'md_file', self.opts.gherkin["features_generated_md_filename"])
-        generated_md_dirpath = os.path.join(self.opts.common["output_directory"], 'gherkin', 'md_dir')
+        generated_md_dirpath = os.path.join(self.opts.common["output_directory"], 'gherkin', 'md_dox')
 
         # markdown dir
         print("### Convert features into a directory for doxygen integration\n")
@@ -219,17 +227,27 @@ class Paperworker:
     def doxygen(self):
         """Run the doxygen job
         """
-        print(f"=================================================")
+        # Log
+        print("\nDoxygen Actions")
+        print("----------------------------------------------------------------\n")
         if not self.opts.jobs["doxygen"]:
-            print(f"JOB: Doxygen => disabled")
+            print(f"!!! disabled !!!\n")
             return
-        print(f"JOB: Doxygen")
-        
+                
         # Create the doxyfile
         f = open("Doxyfile", "w")
         for opt in self.opts.doxyfile:
             f.write(f"{opt} = {self.opts.doxyfile[opt]}\r\n")
         f.close()
+    
+
+        # Log the doxyfile used for the generation
+        doxyfile_filepath=self.subprocessLogFile('Doxyfile')
+        print(f"Doxyfile was exported to {doxyfile_filepath})")
+        with open(doxyfile_filepath, "w") as fd:
+            for opt in self.opts.doxyfile:
+                fd.write(f"{opt} = {self.opts.doxyfile[opt]}\r\n")
+        
         
         # Create the output directory if not exist
         if not os.path.isdir(self.opts.doxyfile["OUTPUT_DIRECTORY"]):
