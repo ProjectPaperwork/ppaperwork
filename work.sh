@@ -34,7 +34,7 @@ if [ "$PWD" = / ]; then
 	cd /builder || exit 1
 fi
 
-cmd="python3 -m gherkin_paperwork"
+cmd="python3 -u -m gherkin_paperwork"
 echo "run cmd $cmd" 
 exec $GOSU bash -c "$cmd"; 
 
