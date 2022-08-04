@@ -62,7 +62,6 @@ class Options:
         self.doxygen = dict()
         self.doxygen["output_html"]=True
         self.doxygen["output_latex"]=False
-        # self.doxygen["output_pdf"]=True
         self.doxygen["include_gherkin"]=True
         self.doxygen["ignore_path"]=['setup.py', '.github/*', '.git/*', '.gitignore', 'documentation/*', '*/features/*']
 
