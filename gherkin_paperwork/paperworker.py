@@ -92,7 +92,7 @@ class Paperworker:
 
         # 
         if self.opts.doxygen["include_gherkin"]:
-            self.opts.doxyfile["INPUT"] += f' {self.opts.common["output_directory"]}/gherkin/md_file'
+            self.opts.doxyfile["INPUT"] += f' {self.opts.common["output_directory"]}/gherkin/md_dox'
 
         # Disable gherkin job if the features dir is not found or provided
         if not self.opts.gherkin["features_dir"]:
@@ -181,7 +181,7 @@ class Paperworker:
     
         # Local variables
         generated_md_filepath = os.path.join(self.opts.common["output_directory"], 'gherkin', 'md_file', self.opts.gherkin["features_generated_md_filename"])
-        generated_md_dirpath = os.path.join(self.opts.common["output_directory"], 'gherkin', 'md_dir')
+        generated_md_dirpath = os.path.join(self.opts.common["output_directory"], 'gherkin', 'md_dox')
 
         # markdown dir
         print("### Convert features into a directory for doxygen integration\n")
@@ -219,12 +219,12 @@ class Paperworker:
     def doxygen(self):
         """Run the doxygen job
         """
-        print(f"=================================================")
+        # Log
+        print("## Doxygen Actions\n")
         if not self.opts.jobs["doxygen"]:
-            print(f"JOB: Doxygen => disabled")
+            print(f"!!! disabled !!!\n")
             return
-        print(f"JOB: Doxygen")
-        
+                
         # Create the doxyfile
         f = open("Doxyfile", "w")
         for opt in self.opts.doxyfile:
