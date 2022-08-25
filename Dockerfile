@@ -1,5 +1,5 @@
 FROM pandoc/core as pandoc_stage
-FROM alpine:3.14
+FROM alpine:3.15
 LABEL org.opencontainers.image.source https://github.com/ProjectPaperwork/ppaperwork
 
 # Enable testing repository (for gosu and pandoc), update
