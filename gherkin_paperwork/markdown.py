@@ -73,7 +73,7 @@ class Markdown_NodeVisitor(NodeVisitor):
 
         # Print step text
         if st.keyword in ("*", *kwargs["dialect"].and_keywords):
-            print(f"\t- _{kwargs['dialect'].and_keywords[1]}_ {st_text}", file=self.io)
+            print(f"- _{kwargs['dialect'].and_keywords[1].replace(' ','')}_ {st_text}", file=self.io)
         else:
             print(f"- _{st.keyword.strip()}_ {st_text}", file=self.io)
 
