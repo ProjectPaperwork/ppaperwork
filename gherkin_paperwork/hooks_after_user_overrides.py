@@ -4,7 +4,8 @@ from fnmatch import fnmatch
 ###############################################################################
 
 def hooks_after_user_overrides(worker):
-    print("## Hooks after user overrides\n")
+    print("\nHooks after user overrides")
+    print("------------------------------\n")
     disable_doxygen_latex_if_option_disabled(worker)
     fill_doxyfile_input_flag(worker)
     doxyfile_append_project_version_from_git_tag(worker)

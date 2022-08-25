@@ -11,7 +11,7 @@ class Options:
     def updateFromYml(self, ymlfilepath):
         # Check if the paperwork file is here
         if not os.path.isfile(ymlfilepath):
-            print(f"**No user overrides ('ppaperwork.yml' on project root dir)**\n")
+            print(f"**No user overrides ('ppaperwork.yml' on project root dir)**\n", flush=True)
             return
 
         # Parse file
@@ -21,7 +21,7 @@ class Options:
         
         # Update options
         if not user_overrides:
-            print("**ERROR Parsing ppaperwork.yml**")
+            print("**ERROR Parsing ppaperwork.yml**", flush=True)
         else:
             print(user_overrides)
             if "jobs" in user_overrides:
@@ -85,7 +85,7 @@ class Options:
         self.doxyfile["RECURSIVE"]               = "YES"
         self.doxyfile["GENERATE_TREEVIEW"]       = "YES"
         self.doxyfile["EXCLUDE_PATTERNS"]        = "*/features/*"
+        self.doxyfile["EXTRACT_ALL"]             = "YES"
+
         
-
-
         
